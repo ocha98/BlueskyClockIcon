@@ -1,0 +1,13 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "BSKY_HANDLE": "your-handle.bsky.social",
+    "BSKY_APP_PASS": "xxxx-xxxx-xxxx-xxxx",
+    "BLUESKY_SESSION_KEYVAULT_NAME": "BLUESKY-SESSION",
+    "KEY_VAULT_URL": "https://your-key-vault.vault.azure.net/",
+    "NORMAL_ICON_PATH": "img/normal.png",
+    "NIGHT_ICON_PATH": "img/night.png"
+  }
+}
