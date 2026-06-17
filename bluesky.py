@@ -14,18 +14,20 @@ def update_bluesky_avatar(icon_png: bytes, settings: Settings) -> None:
     did = client.me.did
     avatar_blob = to_plain_value(client.upload_blob(icon_png).blob)
 
-    profile = load_profile_record(client, did)
+    profile, profile_cid = load_profile_record(client, did)
     profile["avatar"] = avatar_blob
     profile.setdefault("$type", "app.bsky.actor.profile")
 
-    client.com.atproto.repo.put_record(
-        {
-            "repo": did,
-            "collection": "app.bsky.actor.profile",
-            "rkey": "self",
-            "record": profile,
-        }
-    )
+    record_data = {
+        "repo": did,
+        "collection": "app.bsky.actor.profile",
+        "rkey": "self",
+        "record": profile,
+    }
+    if profile_cid:
+        record_data["swap_record"] = profile_cid
+
+    client.com.atproto.repo.put_record(record_data)
 
 
 def init_bluesky_client(settings: Settings) -> Client:
@@ -52,8 +54,8 @@ def init_bluesky_client(settings: Settings) -> Client:
             client.login(session_string=bluesky_session)
             verify_bluesky_login(client, login_method="session")
             return client
-        except Exception as e:
-            logging.warning("既存セッションが使えなかったため app password でログインします: %s", e)
+        except Exception:
+            logging.warning("既存セッションが使えなかったため app password でログインします")
 
     if not settings.bsky_handle or not settings.bsky_app_pass:
         raise RuntimeError(
@@ -119,7 +121,7 @@ def export_session(session: Any) -> str:
     return str(session)
 
 
-def load_profile_record(client: Client, did: str) -> dict[str, Any]:
+def load_profile_record(client: Client, did: str) -> tuple[dict[str, Any], str | None]:
     try:
         response = client.com.atproto.repo.get_record(
             {
@@ -130,10 +132,10 @@ def load_profile_record(client: Client, did: str) -> dict[str, Any]:
         )
     except BadRequestError as e:
         if is_record_not_found(e):
-            return {"$type": "app.bsky.actor.profile"}
+            return {"$type": "app.bsky.actor.profile"}, None
         raise
 
-    return to_dict(response.value)
+    return to_dict(response.value), response.cid
 
 
 def is_record_not_found(error: BadRequestError) -> bool:
