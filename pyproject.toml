@@ -1,0 +1,12 @@
+[project]
+name = "bluesky-clock-icon"
+version = "0.1.0"
+description = "Azure Functions timer that rotates a Bluesky avatar like a clock hand."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "atproto",
+    "azure-functions",
+    "azure-identity",
+    "azure-keyvault-secrets",
+    "pillow",
+]

@@ -8,6 +8,7 @@
     "BLUESKY_SESSION_KEYVAULT_NAME": "BLUESKY-SESSION",
     "KEY_VAULT_URL": "https://your-key-vault.vault.azure.net/",
     "NORMAL_ICON_PATH": "img/normal.png",
-    "NIGHT_ICON_PATH": "img/night.png"
+    "NIGHT_ICON_PATH": "img/night.png",
+    "PYTHONPATH": ".python_packages/lib/site-packages"
   }
 }

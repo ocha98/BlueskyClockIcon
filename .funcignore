@@ -1,7 +1,7 @@
+.git*
+.venv/
+.uv-cache/
+.python_packages/
 __pycache__/
 *.py[cod]
-.python_packages/
-.uv-cache/
-.venv/
-venv/
 local.settings.json
